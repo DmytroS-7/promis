@@ -1,5 +1,5 @@
-function makeBurger(ingredients) {
-  const burgerPromise = new Promise((resolve, reject) => {
+async function makeBurger(ingredients) {
+  const burgerPromise = await new Promise((resolve, reject) => {
     if (ingredients.includes("fish")) {
       //If error use reject()
       reject("We dont have any fish!");
@@ -13,74 +13,89 @@ function makeBurger(ingredients) {
   return burgerPromise;
 }
 
+async function makeBurgerOneByOne() {
+  const burger1 = await makeBurger(["bun2"]);
+  console.log(burger1);
+  const burger2 = await makeBurger([
+    "bun2",
+    "tomato2",
+    "beef2",
+    "sous2",
+    "onion2",
+  ]);
+  console.log(burger2);
+}
+
+makeBurgerOneByOne().catch(handleError);
+
 // const beefBurgerPromise = makeBurger(["bun", "tomato", "beef"]);
 // const chickenBurgerPromise = makeBurger(["bun", "salad", "chicken"]);
 
 // console.log(beefburgerPromise);
 // console.log(chickenburgerPromise);
 
-makeBurger(["bun", "tomato", "beef", "sous", "onion"])
-  .then((burger) => {
-    console.log("Burger delivery");
-    console.log(burger);
-    return makeBurger(["bun"]);
-  })
-  .then((burger) => {
-    console.log("Burger delivery");
-    console.log(burger);
-    return makeBurger(["bun", "salad", "chicken"]);
-  })
-  .then((burger) => {
-    console.log("This is last burger");
-    console.log(burger);
-  })
-  .catch(handleError);
+// makeBurger(["bun", "tomato", "beef", "sous", "onion"])
+//   .then((burger) => {
+//     console.log("Burger delivery");
+//     console.log(burger);
+//     return makeBurger(["bun"]);
+//   })
+//   .then((burger) => {
+//     console.log("Burger delivery");
+//     console.log(burger);
+//     return makeBurger(["bun", "salad", "chicken"]);
+//   })
+//   .then((burger) => {
+//     console.log("This is last burger");
+//     console.log(burger);
+//   })
+//   .catch(handleError);
 
 //Concurently
-const beefBurgerPromise = makeBurger(["bun", "tomato", "beef"]);
-const chickenBurgerPromise = makeBurger(["bun", "salad", "chicken"]);
-const cheeseBurgerPromise = makeBurger(["cheese", "bun"]);
-// const cheeseBurgerPromise = makeBurger(["cheese", "bun", "fish"]);
+// const beefBurgerPromise = makeBurger(["bun", "tomato", "beef"]);
+// const chickenBurgerPromise = makeBurger(["bun", "salad", "chicken"]);
+// const cheeseBurgerPromise = makeBurger(["cheese", "bun"]);
+// // const cheeseBurgerPromise = makeBurger(["cheese", "bun", "fish"]);
 
-const deliveryPromise = Promise.all([
-  beefBurgerPromise,
-  chickenBurgerPromise,
-  cheeseBurgerPromise,
-]);
+// const deliveryPromise = Promise.all([
+//   beefBurgerPromise,
+//   chickenBurgerPromise,
+//   cheeseBurgerPromise,
+// ]);
 
-deliveryPromise
-  .then((burgers) => {
-    const [hamBurger, chickenBurger, cheeseBurger] = burgers;
-    console.log(hamBurger);
-    console.log(chickenBurger);
-    console.log(cheeseBurger);
-  })
-  .catch(handleError);
+// deliveryPromise
+//   .then((burgers) => {
+//     const [hamBurger, chickenBurger, cheeseBurger] = burgers;
+//     console.log(hamBurger);
+//     console.log(chickenBurger);
+//     console.log(cheeseBurger);
+//   })
+//   .catch(handleError);
 
-//-----------
-const firstBurgerPromise = Promise.race([
-  beefBurgerPromise,
-  chickenBurgerPromise,
-  cheeseBurgerPromise,
-]);
+// //-----------
+// const firstBurgerPromise = Promise.race([
+//   beefBurgerPromise,
+//   chickenBurgerPromise,
+//   cheeseBurgerPromise,
+// ]);
 
-firstBurgerPromise
-  .then((burger) => {
-    console.log("I am first ", burger);
-  })
-  .catch(handleError);
+// firstBurgerPromise
+//   .then((burger) => {
+//     console.log("I am first ", burger);
+//   })
+//   .catch(handleError);
 
-const someBurgersPromise = Promise.allSettled([
-  beefBurgerPromise,
-  chickenBurgerPromise,
-  cheeseBurgerPromise,
-]);
+// const someBurgersPromise = Promise.allSettled([
+//   beefBurgerPromise,
+//   chickenBurgerPromise,
+//   cheeseBurgerPromise,
+// ]);
 
-someBurgersPromise
-  .then(([hamBurger, chickenBurger, cheeseBurger]) => {
-    console.log(hamBurger, chickenBurger, cheeseBurger);
-  })
-  .catch(handleError);
+// someBurgersPromise
+//   .then(([hamBurger, chickenBurger, cheeseBurger]) => {
+//     console.log(hamBurger, chickenBurger, cheeseBurger);
+//   })
+//   .catch(handleError);
 
 function handleError(error) {
   console.log(error);
